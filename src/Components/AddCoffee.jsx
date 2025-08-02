@@ -36,9 +36,6 @@ const AddCoffee = () => {
                     })
                 }
 
-            }).catch(error => {
-                console.log(error);
-
             })
 
 

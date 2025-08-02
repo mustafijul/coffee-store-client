@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import Swal from 'sweetalert2'
 const Coffeecard = ({ coffee }) => {
     const { _id, name, quantity, supplier, taste, category, details, photourl } = coffee;
@@ -15,11 +16,22 @@ const Coffeecard = ({ coffee }) => {
             confirmButtonText: "Yes, delete it!"
         }).then((result) => {
             if (result.isConfirmed) {
-                Swal.fire({
-                    title: "Deleted!",
-                    text: "Your file has been deleted.",
-                    icon: "success"
-                });
+
+
+                fetch(`http://localhost:4000/coffee/${_id}`, {
+                    method: 'delete'
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        console.log(data);
+                        if (data.deletedCount > 0) {
+                            Swal.fire({
+                                title: "Deleted!",
+                                text: "Your file has been deleted.",
+                                icon: "success"
+                            });
+                        }
+                    })
             }
         });
     }
@@ -42,7 +54,10 @@ const Coffeecard = ({ coffee }) => {
                     <div className="card-actions justify-end">
                         <div className="join join-vertical space-y-4">
                             <button className="btn">View</button>
-                            <button className="btn">Edit</button>
+                            <Link to={`updateCoffee/${_id}`}>
+                                <button className="btn">Edit</button>
+                            </Link>
+
                             <button onClick={() => handleDelete(_id)} className="btn bg-orange-500">Delete</button>
                         </div>
                     </div>
